@@ -23,7 +23,7 @@
       --chip-stroke:#2a2a2a;
 
       /* ---- Layout ---- */
-      --maxw: 640px;                 /* was 1080, global max width for content areas */
+      --maxw: 640px;                 /* global max width for content areas */
       --pad-x: clamp(16px, 4vw, 32px);
       --section-pad: clamp(48px, 7vw, 96px);
 
@@ -61,23 +61,21 @@
       display:flex;
       align-items:center;
     }
-/* Header inner: full width so nav sits at the far right */
-.topbar__inner{
-  max-width: 100%;  /* override 640px */
-  width: 100%;      /* fill the viewport */
-  margin: 0;        /* cancel centering */
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;  /* keep nav to the right inside the bar */
-  gap:20px;
-  padding:0 var(--pad-x);
-  height:100%;
-}
+    /* Header inner: full width so nav sits at the far right */
+    .topbar__inner{
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;  /* keep nav to the right inside the bar */
+      gap:20px;
+      padding:0 var(--pad-x);
+      height:100%;
+    }
+    /* Safety: ensure nav hugs the right edge */
+    .topbar__inner .nav{ margin-left: auto; }
 
-/* Safety: ensure nav hugs the right edge */
-.topbar__inner .nav{
-  margin-left: auto;
-}
     .nav a{
       font-weight:700;
       letter-spacing:.02em;
@@ -141,10 +139,7 @@
     }
 
     /* ---- Games ---- */
-    .section--games{
-      /* removed red halo/background */
-      background:none;
-    }
+    .section--games{ background:none; } /* removed any tint */
     .container{ max-width:var(--maxw); margin:0 auto; }  /* width controller for sections */
 
     .games-grid{ display:grid; grid-template-columns: 1fr; gap:18px; }
@@ -206,7 +201,25 @@
     }
     .about p{ color:var(--muted); margin:0; }
 
-    /* Buy me a coffee: ALWAYS centered, with larger spacing from content */
+    /* ---- Support (coffee) ---- */
+    /* Screen-reader only utility (keeps section accessible without a visible title) */
+    .sr-only{
+      position:absolute !important;
+      width:1px !important;
+      height:1px !important;
+      padding:0 !important;
+      margin:-1px !important;
+      overflow:hidden !important;
+      clip:rect(0,0,0,0) !important;
+      white-space:nowrap !important;
+      border:0 !important;
+    }
+
+    .section--support .support-container{
+      display:flex; justify-content:center; /* center the button horizontally */
+    }
+
+    /* Buy me a coffee: always centered, with larger spacing from content */
     .coffee{
       margin:32px auto 0;              /* centered on all breakpoints */
       display:inline-flex; align-items:center; gap:10px;
@@ -322,13 +335,19 @@
           <p>If you’ve found your way here through one of my games — thank you for playing! Your time and interest mean a lot.</p>
           <p>If you have any comments or thoughts, feel free to reach out — I’ll do my best to reply!</p>
           <p><a href="mailto:piratesloop4@gmail.com">piratesloop4@gmail.com</a></p>
-
-          <!-- Yellow button: always centered -->
-          <a class="coffee" href="https://www.buymeacoffee.com/piratesloop" target="_blank" rel="noopener">
-            ☕ Buy me a coffee
-          </a>
+          <!-- coffee button moved to Support section -->
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT (not shown in the top menu) -->
+  <section id="support" class="section section--support" aria-label="Support">
+    <div class="container support-container">
+      <h2 class="sr-only">Support</h2>
+      <a class="coffee" href="https://www.buymeacoffee.com/piratesloop" target="_blank" rel="noopener">
+        ☕ Buy me a coffee
+      </a>
     </div>
   </section>
 
