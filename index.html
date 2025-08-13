@@ -61,16 +61,23 @@
       display:flex;
       align-items:center;
     }
-    .topbar__inner{
-      max-width:var(--maxw);
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;  /* nav at the right */
-      gap:20px;
-      padding:0 var(--pad-x);
-      height:100%;
-    }
+/* Header inner: full width so nav sits at the far right */
+.topbar__inner{
+  max-width: 100%;  /* override 640px */
+  width: 100%;      /* fill the viewport */
+  margin: 0;        /* cancel centering */
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;  /* keep nav to the right inside the bar */
+  gap:20px;
+  padding:0 var(--pad-x);
+  height:100%;
+}
+
+/* Safety: ensure nav hugs the right edge */
+.topbar__inner .nav{
+  margin-left: auto;
+}
     .nav a{
       font-weight:700;
       letter-spacing:.02em;
@@ -322,15 +329,6 @@
           </a>
         </div>
       </div>
-    </div>
-  </section>
-
-    <!-- Buy me a coffee -->
-    <div class="container">
-          <!-- Yellow button: always centered -->
-          <a class="coffee" href="https://www.buymeacoffee.com/piratesloop" target="_blank" rel="noopener">
-            ☕ Buy me a coffee
-          </a>
     </div>
   </section>
 
