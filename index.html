@@ -40,7 +40,7 @@
       --t1-size: 16px;
       --t1-weight: 400;
 
-      /* Type 2: same size as Type 1, but bold (buttons, short accents, game title) */
+      /* Type 2: same size as Type 1, but bold (short accents, game title) */
       --t2-size: var(--t1-size);
       --t2-weight: 700;
 
@@ -200,15 +200,15 @@
       justify-content:flex-start;
     }
 
-    /* Store buttons -> Type 2 */
+    /* Store buttons -> Type 1 (normal weight as requested) */
     .store-btn{
       display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px;
       border:1px solid #2a2a2a;
       border-radius:10px;
       background:#0f0f0f;
-      font-size: var(--t2-size);
-      font-weight: var(--t2-weight);
+      font-size: var(--t1-size);     /* same size as Type 1 */
+      font-weight: var(--t1-weight); /* normal (no bold) */
       transition:transform .12s ease, border-color .2s ease, background .2s ease, color .2s ease;
     }
     .store-btn:hover{ transform:translateY(-1px); border-color:#3a3a3a; background:#151515; color:#fff; }
@@ -249,7 +249,7 @@
     .section--support .support-container{
       display:flex; justify-content:center;
     }
-    /* Coffee -> Type 2 */
+    /* Coffee -> Type 1 (normal weight as requested) */
     .coffee{
       margin:32px auto 0;
       display:inline-flex; align-items:center; gap:10px;
@@ -258,8 +258,8 @@
       background:#ffd84d;
       border:1px solid #caa200;
       color:#000;
-      font-size: var(--t2-size);
-      font-weight: var(--t2-weight);
+      font-size: var(--t1-size);     /* same size as Type 1 */
+      font-weight: var(--t1-weight); /* normal (no bold) */
       transition:transform .12s ease, background .2s ease, filter .2s ease;
     }
     .coffee:hover{ transform:translateY(-1px); filter:saturate(1.05); }
