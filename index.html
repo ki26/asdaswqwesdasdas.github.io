@@ -228,10 +228,10 @@
     }
     .about p{ color:var(--muted); margin:0; }
 
-/* "Ahoy!" -> Type 1 (normal) */
-.about p strong{
-  font-size: var(--t1-size);
-  font-weight: var(--t1-weight);
+/* Email paragraph (italic) */
+.about p:last-of-type {
+  margin-top: 1em; /* space email from text */
+  font-style: italic;
 }
 
     /* ---- Support (coffee) ---- */
@@ -368,7 +368,7 @@
 
         <!-- Text -->
         <div>
-          <p><strong>Ahoy!</strong></p>
+          <p>Ahoy!</p>
           <p>I’m the captain of Pirate Sloop — and the only full-time crew member.</p>
           <p>My name is Ihor. I’m from Ukraine and work as an architect. Game development is my hobby — something I do in my free time.</p>
           <p>If you’ve found your way here through one of my games — thank you for playing! Your time and interest mean a lot.</p>
