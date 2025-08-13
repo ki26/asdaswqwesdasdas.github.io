@@ -40,7 +40,7 @@
       --t1-size: 16px;
       --t1-weight: 400;
 
-      /* Type 2: same size as Type 1, but bold (short accents, game title) */
+      /* Type 2: same size as Type 1, but bold (short accents, game title, buttons) */
       --t2-size: var(--t1-size);
       --t2-weight: 700;
 
@@ -75,7 +75,6 @@
       height:var(--topbar-h);
       z-index:1000;
       background:#000;
-      border-bottom:none;
       display:flex;
       align-items:center;
     }
@@ -94,13 +93,11 @@
 
     /* Type 1 for nav */
     .nav a{
-      /* Same size/weight as body */
       font-size: var(--t1-size);
       font-weight: var(--t1-weight);
       letter-spacing:.02em;
       display:inline-block;
       padding:8px 10px;
-      border-radius:0;
       transition:transform .15s ease, background-color .2s ease, color .2s ease;
       color:#ddd;
     }
@@ -129,8 +126,6 @@
       margin:0 0 28px;
       filter:drop-shadow(0 8px 28px rgba(0,0,0,.75));
     }
-    /* Brand text not used (remove visual type noise) */
-    .brand{ display:none; }
 
     .socials{ display:flex; gap:14px; justify-content:center; margin-top:18px; }
     .chip{
@@ -143,9 +138,8 @@
 
     /* ---- Section titles (Type 3) ---- */
     .h2{
-      font-family: inherit;          /* keep single family */
-      font-size: var(--t3-size);     /* bigger */
-      font-weight: var(--t3-weight); /* bold */
+      font-size: var(--t3-size);
+      font-weight: var(--t3-weight);
       letter-spacing: 0;
       margin:0 0 22px;
       text-align:center;
@@ -170,7 +164,6 @@
     }
     .game-thumb{
       width:120px; height:120px;
-      border-radius:0;
       background:#0f0f0f;
       border:1px solid #222;
       display:grid; place-items:center;
@@ -200,17 +193,23 @@
       justify-content:flex-start;
     }
 
-/* Store buttons -> Type 2 (bold) */
-.store-btn{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:10px 12px;
-  border:1px solid #2a2a2a;
-  border-radius:10px;
-  background:#0f0f0f;
-  font-size: var(--t1-size);
-  font-weight: var(--t2-weight);
-  transition:transform .12s ease, border-color .2s ease, background .2s ease, color .2s ease;
-}
+    /* ---- Buttons (shared) ---- */
+    .btn{
+      /* shared button primitives */
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:8px;
+      transition:transform .12s ease, border-color .2s ease, background .2s ease, color .2s ease;
+      font-size: var(--t2-size);      /* Type 2 size */
+      font-weight: var(--t2-weight);  /* Type 2 weight (bold) */
+    }
+
+    /* Store buttons */
+    .store-btn{
+      composes: btn; /* hint for readability; not a real CSS feature */
+      border:1px solid #2a2a2a;
+      background:#0f0f0f;
+    }
     .store-btn:hover{ transform:translateY(-1px); border-color:#3a3a3a; background:#151515; color:#fff; }
     .store-ico{ width:18px; height:18px; display:block; }
 
@@ -222,17 +221,15 @@
     }
     .avatar{
       width:104px; height:104px;
-      border-radius:0;
       border:1px solid #222; background:#0f0f0f; overflow:hidden;
-      margin:0;
     }
     .about p{ color:var(--muted); margin:0; }
 
-/* Email paragraph (italic) */
-.about p:last-of-type {
-  margin-top: 1em; /* space email from text */
-  font-style: italic;
-}
+    /* Email paragraph (spacing + italic) */
+    .about p:last-of-type {
+      margin-top: 1em;
+      font-style: italic;
+    }
 
     /* ---- Support (coffee) ---- */
     .sr-only{
@@ -249,19 +246,20 @@
     .section--support .support-container{
       display:flex; justify-content:center;
     }
-  /* Coffee -> Type 2 (bold) */
-.coffee{
-  margin:32px auto 0;
-  display:inline-flex; align-items:center; gap:10px;
-  padding:12px 18px;
-  border-radius:8px;
-  background:#ffd84d;
-  border:1px solid #caa200;
-  color:#000;
-  font-size: var(--t1-size);
-  font-weight: var(--t2-weight);
-  transition:transform .12s ease, background .2s ease, filter .2s ease;
-}
+
+    /* Coffee button (Type 2) */
+    .coffee{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 18px;
+      border-radius:8px;
+      background:#ffd84d;
+      border:1px solid #caa200;
+      color:#000;
+      font-size: var(--t2-size);
+      font-weight: var(--t2-weight);
+      transition:transform .12s ease, background .2s ease, filter .2s ease;
+      margin:32px auto 0;
+    }
     .coffee:hover{ transform:translateY(-1px); filter:saturate(1.05); }
 
     /* ---- Footer -> Type 1 ---- */
@@ -271,15 +269,14 @@
       text-align:center;
       font-size: var(--t1-size);
       font-weight: var(--t1-weight);
-     /* border-top:1px solid #0f0f0f; --- line on the bottom */ 
       margin-top:var(--section-pad);
     }
 
-    /* --- Support spacing controls (unchanged logic) --- */
+    /* --- Support spacing controls --- */
     :root{
-      --support-pad-y: 8px;      /* vertical padding inside #support */
-      --support-gap: 0px;        /* space above the coffee button */
-      --support-footer-gap: 82px;/* gap before footer after Support */
+      --support-pad-y: 8px;
+      --support-gap: 0px;
+      --support-footer-gap: 82px;
     }
     .section--support{ padding: var(--support-pad-y) var(--pad-x); }
     .section--support .coffee{ margin: var(--support-gap) auto 0; }
@@ -318,16 +315,12 @@
   <!-- MAIN / HERO -->
   <section id="main" class="section section--hero" aria-label="Main">
     <!-- Logo -->
-    <img class="logo" src="assets/piratesloop-logo2.png" alt="Pirate Sloop Logo">
-
-    <!-- Brand text (not used) -->
-    <!-- <div class="brand">PIRATESLOOP</div> -->
+    <img class="logo" src="assets/piratesloop-logo2.png" alt="Pirate Sloop Logo" loading="lazy">
 
     <!-- Social row (round chips) -->
     <div class="socials" aria-label="Social links">
       <!-- Tumblr -->
       <a class="chip" href="https://piratesloop.tumblr.com/" target="_blank" rel="noopener" aria-label="Tumblr">
-        <!-- simple SVG icon -->
         <svg width="22" height="22" viewBox="0 0 24 24" fill="#cfcfcf" xmlns="http://www.w3.org/2000/svg">
           <path d="M14.6 21.9c-3.9 0-6.4-2.1-6.4-5.6V9H6V6.1c2.5-.9 3.3-2.9 3.6-4.1H12v3.6h3v3.4h-3v6c0 1.4.8 2.2 2.1 2.2 1 0 1.7-.2 2.4-.6v3.1c-.7.4-1.9.8-2.9.8z"/>
         </svg>
@@ -361,9 +354,9 @@
       <h2 class="h2">About</h2>
 
       <div class="about">
-        <!-- Avatar (sharp corners) -->
+        <!-- Avatar -->
         <div class="avatar">
-          <img src="assets/avatar.png" alt="Avatar">
+          <img src="assets/avatar.png" alt="Avatar" loading="lazy">
         </div>
 
         <!-- Text -->
@@ -379,7 +372,7 @@
     </div>
   </section>
 
-  <!-- SUPPORT (not shown in the top menu) -->
+  <!-- SUPPORT -->
   <section id="support" class="section section--support" aria-label="Support">
     <div class="container support-container">
       <h2 class="sr-only">Support</h2>
@@ -395,9 +388,8 @@
 
   <!-- ===== Templates & Scripts ===== -->
   <template id="game-card-template">
-    <!-- Game card with sharp corners -->
     <article class="game-card">
-      <div class="game-thumb"><img alt=""></div>
+      <div class="game-thumb"><img alt="" loading="lazy"></div>
       <div class="game-body">
         <div class="game-title"></div>
         <div class="game-desc"></div>
@@ -407,30 +399,21 @@
   </template>
 
   <script>
-    // ---- Minimal helpers & data ----
+    // ---- Helpers & data ----
 
-    /** Build a store button (brand-agnostic) */
+    /* Build a store button (brand-agnostic, concise with innerHTML) */
     function createStoreButton(label, href, svgPathD){
       const a = document.createElement('a');
-      a.className = 'store-btn';
+      a.className = 'store-btn btn';
       a.href = href || '#';
       a.target = '_blank';
       a.rel = 'noopener';
-      a.ariaLabel = label;
-
-      // icon
-      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-      svg.setAttribute('class','store-ico');
-      svg.setAttribute('viewBox','0 0 24 24');
-      svg.setAttribute('fill','#cfcfcf');
-      const p = document.createElementNS('http://www.w3.org/2000/svg','path');
-      p.setAttribute('d', svgPathD);
-      svg.appendChild(p);
-
-      const span = document.createElement('span');
-      span.textContent = label;
-
-      a.append(svg, span);
+      a.innerHTML = `
+        <svg class="store-ico" viewBox="0 0 24 24" fill="#cfcfcf">
+          <path d="${svgPathD}"/>
+        </svg>
+        <span>${label}</span>
+      `;
       return a;
     }
 
@@ -441,7 +424,7 @@
       gplay:  "M3 4.3a2 2 0 011.9-1.9l8.8 8.2-3 3-7.7-9.3zM12.6 11.6l3-3 3.3 3.1-9.3 5.5 3-5.6zM3 5.9l7.2 8.8L4.8 17A2 2 0 013 15.1V5.9zM19.8 9.9l1.2.9a2 2 0 010 3.2l-1.3.9-3.9-2.5 4-2.5z"
     };
 
-    // Add your games here
+    // Games data (stores uncommented)
     const gamesData = [
       {
         title: "Darkened: Dungeon RPG",
@@ -449,8 +432,8 @@
           "Plunge into a cursed world of dark fantasy. Explore unique dungeons, master tactical turn-based combat, and unravel the secrets of a realm consumed by corruption.",
         cover: "assets/darkened-cover.png",
         stores: [
-          // { label: "Steam",       url: "#", icon: ICONS.steam },
-          // { label: "App Store",   url: "#", icon: ICONS.ios },
+          { label: "Steam",       url: "#", icon: ICONS.steam },
+          { label: "App Store",   url: "#", icon: ICONS.ios },
           { label: "Google Play", url: "#", icon: ICONS.gplay }
         ]
       }
@@ -467,6 +450,7 @@
       const img = node.querySelector('.game-thumb img');
       img.src = game.cover;
       img.alt = `${game.title} cover`;
+      img.loading = 'lazy';
 
       // Title & desc
       node.querySelector('.game-title').textContent = game.title;
@@ -482,7 +466,7 @@
     // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Smooth in-page scroll (still useful with scroll-margin-top)
+    // Smooth in-page scroll
     document.querySelectorAll('.nav a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
         const id = a.getAttribute('href').slice(1);
@@ -494,9 +478,8 @@
       });
     });
 
-    // --- Scroll spy: highlight active nav link on scroll ---
+    // Scroll spy: highlight active nav link on scroll
     (() => {
-      // Read fixed header height from CSS var
       const topbarH = parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--topbar-h')
       ) || 56;
@@ -504,12 +487,10 @@
       const links = Array.from(document.querySelectorAll('.nav a'));
       const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
 
-      // Helper to toggle 'active' class
       const setActive = (id) => {
         links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
       };
 
-      // Observe which section is in view
       const io = new IntersectionObserver((entries) => {
         let best = null;
         for (const e of entries) {
@@ -528,7 +509,7 @@
 
       document.querySelectorAll('section[id]').forEach(sec => io.observe(sec));
 
-      // Set initial active on load (rough probe below the header)
+      // Initial active on load
       const probe = document.elementFromPoint(window.innerWidth/2, topbarH + 10);
       const currentSection = probe && probe.closest ? probe.closest('section[id]') : null;
       if (currentSection) setActive(currentSection.id);
