@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pirate Sloop</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: keep only Fira Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    /* ===========================
+       GLOBAL THEME & TYPOGRAPHY
+       =========================== */
     :root{
       /* ---- Theme tokens ---- */
       --bg: #000;
@@ -23,15 +25,28 @@
       --chip-stroke:#2a2a2a;
 
       /* ---- Layout ---- */
-      --maxw: 640px;                 /* global max width for content areas */
+      --maxw: 640px;
       --pad-x: clamp(16px, 4vw, 32px);
       --section-pad: clamp(48px, 7vw, 96px);
 
       /* ---- Fixed topbar height ---- */
       --topbar-h: 56px;
 
-      /* ---- Hero spacing (gap from fixed header to logo) ---- */
+      /* ---- Hero spacing ---- */
       --hero-top-gap: 72px;
+
+      /* ---- Typography system (3 types) ---- */
+      /* Type 1: base text (nav, paragraphs, footer, descriptions) */
+      --t1-size: 16px;
+      --t1-weight: 400;
+
+      /* Type 2: same size as Type 1, but bold (buttons, short accents, game title) */
+      --t2-size: var(--t1-size);
+      --t2-weight: 700;
+
+      /* Type 3: section headings (bigger + bold) */
+      --t3-size: 24px;
+      --t3-weight: 700;
     }
 
     /* Base reset */
@@ -44,48 +59,51 @@
       font-family:'Fira Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       line-height:1.5;
       overflow:auto;
-      /* Reserve space for fixed header so content isn't hidden under it */
       padding-top: var(--topbar-h);
+
+      /* Type 1 defaults */
+      font-size: var(--t1-size);
+      font-weight: var(--t1-weight);
     }
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
 
-    /* ---- Top bar (fixed, always visible) ---- */
+    /* ---- Top bar ---- */
     .topbar{
       position:fixed;
       top:0; left:0; right:0;
       height:var(--topbar-h);
       z-index:1000;
-      background:#000;         /* solid black, no divider line */
+      background:#000;
       border-bottom:none;
       display:flex;
       align-items:center;
     }
-    /* Header inner: full width so nav sits at the far right */
     .topbar__inner{
       max-width: 100%;
       width: 100%;
       margin: 0;
       display:flex;
       align-items:center;
-      justify-content:flex-end;  /* keep nav to the right inside the bar */
+      justify-content:flex-end;
       gap:20px;
       padding:0 var(--pad-x);
       height:100%;
     }
-    /* Safety: ensure nav hugs the right edge */
     .topbar__inner .nav{ margin-left: auto; }
 
+    /* Type 1 for nav */
     .nav a{
-      font-weight:400;
+      /* Same size/weight as body */
+      font-size: var(--t1-size);
+      font-weight: var(--t1-weight);
       letter-spacing:.02em;
       display:inline-block;
       padding:8px 10px;
-      border-radius:0;           /* sharp corners */
+      border-radius:0;
       transition:transform .15s ease, background-color .2s ease, color .2s ease;
       color:#ddd;
     }
-    /* Hover and active share the same visual */
     .nav a:hover,
     .nav a.active{
       transform: translateY(-1px);
@@ -93,13 +111,13 @@
       background:#111;
     }
 
-    /* Sections share top scroll offset so anchors don't hide behind fixed header */
+    /* Sections */
     .section{
       padding:var(--section-pad) var(--pad-x);
       scroll-margin-top: calc(var(--topbar-h) + 12px);
     }
 
-    /* ---- Hero (Main) ---- */
+    /* ---- Hero ---- */
     .section--hero{
       display:grid;
       place-items:center;
@@ -111,41 +129,35 @@
       margin:0 0 28px;
       filter:drop-shadow(0 8px 28px rgba(0,0,0,.75));
     }
-    /* Brand text is kept for future (commented in HTML) */
-    .brand{
-      font-family:'Baskervville', serif;
-      font-size:clamp(28px, 4.2vw, 52px);
-      letter-spacing:.28em;
-      color:#fff;
-      text-indent:.28em;
-      margin:6px 0 14px;
-    }
+    /* Brand text not used (remove visual type noise) */
+    .brand{ display:none; }
 
     .socials{ display:flex; gap:14px; justify-content:center; margin-top:18px; }
     .chip{
       display:inline-flex; align-items:center; justify-content:center;
-      width:48px; height:48px; border-radius:50%; /* keep round for socials */
+      width:48px; height:48px; border-radius:50%;
       background:var(--chip); border:1px solid var(--chip-stroke);
       transition:transform .15s ease, border-color .2s ease, background .2s ease;
     }
     .chip:hover{ transform:translateY(-2px); border-color:#3a3a3a; background:#141414; }
 
-    /* ---- Section titles centered ---- */
+    /* ---- Section titles (Type 3) ---- */
     .h2{
-      font-family:'Baskervville', serif;
-      font-size:clamp(22px, 2.6vw, 34px);
+      font-family: inherit;          /* keep single family */
+      font-size: var(--t3-size);     /* bigger */
+      font-weight: var(--t3-weight); /* bold */
+      letter-spacing: 0;
       margin:0 0 22px;
       text-align:center;
     }
 
     /* ---- Games ---- */
-    .section--games{ background:none; } /* removed any tint */
-    .container{ max-width:var(--maxw); margin:0 auto; }  /* width controller for sections */
-
+    .section--games{ background:none; }
+    .container{ max-width:var(--maxw); margin:0 auto; }
     .games-grid{ display:grid; grid-template-columns: 1fr; gap:18px; }
 
     .game-card{
-      border-radius:0;                 /* sharp */
+      border-radius:0;
       --card-bg: var(--card);
       --stroke: var(--card-stroke);
       display:grid;
@@ -156,10 +168,9 @@
       padding:16px;
       align-items:center;
     }
-
     .game-thumb{
       width:120px; height:120px;
-      border-radius:0;                 /* sharp */
+      border-radius:0;
       background:#0f0f0f;
       border:1px solid #222;
       display:grid; place-items:center;
@@ -168,20 +179,36 @@
     .game-thumb img{ width:100%; height:100%; object-fit:cover; }
 
     .game-body{ display:grid; gap:10px; }
-    .game-title{ font-size:clamp(18px, 2.2vw, 22px); font-weight:700; letter-spacing:.02em; }
-    .game-desc{ color:var(--muted); font-size:14.5px; line-height:1.6; }
+
+    /* Game title -> Type 2 (same size as body, but bold) */
+    .game-title{
+      font-size: var(--t2-size);
+      font-weight: var(--t2-weight);
+      letter-spacing:.02em;
+    }
+
+    /* Game description -> Type 1 */
+    .game-desc{
+      color:var(--muted);
+      font-size: var(--t1-size);
+      font-weight: var(--t1-weight);
+      line-height:1.6;
+    }
 
     .store-row{
       display:flex; flex-wrap:wrap; gap:10px; align-items:center;
-      justify-content:flex-start;     /* centered on mobile via media query */
+      justify-content:flex-start;
     }
+
+    /* Store buttons -> Type 2 */
     .store-btn{
       display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px;
       border:1px solid #2a2a2a;
-      border-radius:10px;             /* keep as-is */
+      border-radius:10px;
       background:#0f0f0f;
-      font-weight:600; font-size:14px;
+      font-size: var(--t2-size);
+      font-weight: var(--t2-weight);
       transition:transform .12s ease, border-color .2s ease, background .2s ease, color .2s ease;
     }
     .store-btn:hover{ transform:translateY(-1px); border-color:#3a3a3a; background:#151515; color:#fff; }
@@ -195,11 +222,17 @@
     }
     .avatar{
       width:104px; height:104px;
-      border-radius:0;                 /* sharp */
+      border-radius:0;
       border:1px solid #222; background:#0f0f0f; overflow:hidden;
-      margin:0;                        /* centered on mobile via media query */
+      margin:0;
     }
     .about p{ color:var(--muted); margin:0; }
+
+    /* "Ahoy!" -> Type 2 */
+    .about p strong{
+      font-size: var(--t2-size);
+      font-weight: var(--t2-weight);
+    }
 
     /* ---- Support (coffee) ---- */
     .sr-only{
@@ -213,67 +246,52 @@
       white-space:nowrap !important;
       border:0 !important;
     }
-
     .section--support .support-container{
-      display:flex; justify-content:center; /* center the button horizontally */
+      display:flex; justify-content:center;
     }
-
-    /* Buy me a coffee: always centered, with larger spacing from content */
+    /* Coffee -> Type 2 */
     .coffee{
-      margin:32px auto 0;              /* centered on all breakpoints */
+      margin:32px auto 0;
       display:inline-flex; align-items:center; gap:10px;
       padding:12px 18px;
       border-radius:8px;
       background:#ffd84d;
       border:1px solid #caa200;
-      color:#000; font-weight:800;
+      color:#000;
+      font-size: var(--t2-size);
+      font-weight: var(--t2-weight);
       transition:transform .12s ease, background .2s ease, filter .2s ease;
     }
     .coffee:hover{ transform:translateY(-1px); filter:saturate(1.05); }
 
-    /* ---- Footer ---- */
+    /* ---- Footer -> Type 1 ---- */
     footer{
       padding:20px var(--pad-x) 40px;
       color:#8a8a8a;
       text-align:center;
-      font-size:13px;
+      font-size: var(--t1-size);
+      font-weight: var(--t1-weight);
       border-top:1px solid #0f0f0f;
       margin-top:var(--section-pad);
     }
 
-/* --- Support spacing controls (only for the coffee section) --- */
-:root{
-  --support-pad-y: 8px;         /* vertical padding inside #support (top & bottom) */
-  --support-gap: 0px;            /* space above the coffee button */
-  --support-footer-gap: 82px;    /* gap before footer after the Support section */
-}
-
-/* Make the Support section more compact vertically */
-.section--support{
-  padding: var(--support-pad-y) var(--pad-x); /* overrides .section padding */
-}
-
-/* Center remains; only shrink the top margin above the button */
-.section--support .coffee{
-  margin: var(--support-gap) auto 0; /* top | left/right | bottom */
-}
-
-/* Tighten space between Support and the footer */
-.section--support + footer{
-  margin-top: var(--support-footer-gap);
-}
+    /* --- Support spacing controls (unchanged logic) --- */
+    :root{
+      --support-pad-y: 8px;      /* vertical padding inside #support */
+      --support-gap: 0px;        /* space above the coffee button */
+      --support-footer-gap: 82px;/* gap before footer after Support */
+    }
+    .section--support{ padding: var(--support-pad-y) var(--pad-x); }
+    .section--support .coffee{ margin: var(--support-gap) auto 0; }
+    .section--support + footer{ margin-top: var(--support-footer-gap); }
 
     /* ---- Mobile tweaks ---- */
     @media (max-width:640px){
-      /* About: center avatar and text */
       .about{ grid-template-columns: 1fr; text-align:center; }
       .avatar{ margin: 0 auto; }
-
-      /* Games: center store buttons */
       .store-row{ justify-content:center; }
     }
     @media (max-width:520px){
-      /* Games: stack card and center cover */
       .game-card{ grid-template-columns: 1fr; text-align:center; }
       .game-thumb{ margin: 0 auto; }
     }
@@ -302,10 +320,10 @@
     <!-- Logo -->
     <img class="logo" src="assets/piratesloop-logo2.png" alt="Pirate Sloop Logo">
 
-    <!-- Brand text (commented out for future use) -->
+    <!-- Brand text (not used) -->
     <!-- <div class="brand">PIRATESLOOP</div> -->
 
-    <!-- Social row (round chips kept intact) -->
+    <!-- Social row (round chips) -->
     <div class="socials" aria-label="Social links">
       <!-- Tumblr -->
       <a class="chip" href="https://piratesloop.tumblr.com/" target="_blank" rel="noopener" aria-label="Tumblr">
@@ -356,7 +374,6 @@
           <p>If you’ve found your way here through one of my games — thank you for playing! Your time and interest mean a lot.</p>
           <p>If you have any comments or thoughts, feel free to reach out — I’ll do my best to reply!</p>
           <p><a href="mailto:piratesloop4@gmail.com">piratesloop4@gmail.com</a></p>
-          <!-- coffee button moved to Support section -->
         </div>
       </div>
     </div>
