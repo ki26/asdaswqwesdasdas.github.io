@@ -242,6 +242,29 @@
       margin-top:var(--section-pad);
     }
 
+/* --- Support spacing controls (only for the coffee section) --- */
+/* Tweak these values to control vertical spacing around the coffee button */
+:root{
+  --support-pad-y: 28px;         /* vertical padding inside #support (top & bottom) */
+  --support-gap: 8px;            /* space above the coffee button */
+  --support-footer-gap: 18px;    /* gap before footer after the Support section */
+}
+
+/* Make the Support section more compact vertically */
+.section--support{
+  padding: var(--support-pad-y) var(--pad-x); /* overrides .section padding */
+}
+
+/* Center remains; only shrink the top margin above the button */
+.section--support .coffee{
+  margin: var(--support-gap) auto 0; /* top | left/right | bottom */
+}
+
+/* Tighten space between Support and the footer */
+.section--support + footer{
+  margin-top: var(--support-footer-gap);
+}
+
     /* ---- Mobile tweaks ---- */
     @media (max-width:640px){
       /* About: center avatar and text */
