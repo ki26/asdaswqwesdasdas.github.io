@@ -29,6 +29,9 @@
       --radius: 16px;
       --radius-lg: 22px;
       --shadow: 0 6px 30px rgba(0,0,0,.6);
+
+      /* ---- Hero spacing (controls top gap from page edge to logo) ---- */
+      --hero-top-gap: 72px; /* adjust this value to increase/decrease top spacing */
     }
 
     /* Base reset */
@@ -40,25 +43,28 @@
       background:var(--bg);
       font-family:'Fira Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       line-height:1.5;
+      /* Allow page scrolling */
+      overflow:auto;
     }
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
 
     /* ---- Top bar ---- */
     .topbar{
-      position:sticky; /* stays at top when scrolling */
+      position:sticky;
       top:0;
       z-index:10;
       background:linear-gradient(180deg, rgba(0,0,0,.85), rgba(0,0,0,.6));
       backdrop-filter: blur(6px);
-      border-bottom:1px solid #111;
+      /* removed subtle top border line */
+      border-bottom:none; /* <- no line */
     }
     .topbar__inner{
       max-width:var(--maxw);
       margin:0 auto;
       display:flex;
       align-items:center;
-      justify-content:flex-end; /* nav on the right */
+      justify-content:flex-end;
       gap:20px;
       padding:14px var(--pad-x);
     }
@@ -67,7 +73,8 @@
       letter-spacing:.02em;
       display:inline-block;
       padding:8px 10px;
-      border-radius:6px;
+      /* sharp corners for nav buttons */
+      border-radius:0; /* <- sharp */
       transition:transform .15s ease, background-color .2s ease, color .2s ease;
       color:#ddd;
     }
@@ -79,11 +86,12 @@
       display:grid;
       place-items:center;
       text-align:center;
-      padding-top:calc(var(--section-pad) + 24px);
+      /* control top spacing to logo here */
+      padding-top:var(--hero-top-gap);
     }
     .logo{
       width:min(92vw, 600px);
-      margin:10px auto 28px;
+      margin:0 0 28px; /* no top margin; spacing is handled by --hero-top-gap */
       filter:drop-shadow(0 8px 28px rgba(0,0,0,.75));
     }
     .brand{
@@ -91,7 +99,7 @@
       font-size:clamp(28px, 4.2vw, 52px);
       letter-spacing:.28em;
       color:#fff;
-      text-indent:.28em; /* optical centering with tracking */
+      text-indent:.28em;
       margin:6px 0 14px;
     }
     .socials{
@@ -108,25 +116,22 @@
     }
     .chip:hover{ transform:translateY(-2px); border-color:#3a3a3a; background:#141414; }
 
-    /* ---- Games ---- */
-    .section--games{ background: radial-gradient(1200px 500px at 50% -200px, rgba(160,62,62,.08), transparent 70%); }
-    .container{ max-width:var(--maxw); margin:0 auto; }
+    /* ---- Section titles centered ---- */
     .h2{
       font-family:'Baskervville', serif;
       font-size:clamp(22px, 2.6vw, 34px);
       margin:0 0 22px;
-    }
-    .games-grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:18px;
-    }
-    @media (min-width:740px){
-      .games-grid{ grid-template-columns: 1fr; }
+      text-align:center; /* centered titles */
     }
 
+    /* ---- Games ---- */
+    .section--games{ background: radial-gradient(1200px 500px at 50% -200px, rgba(160,62,62,.08), transparent 70%); }
+    .container{ max-width:var(--maxw); margin:0 auto; }
+    .games-grid{ display:grid; grid-template-columns: 1fr; gap:18px; }
+
     .game-card{
-      /* Card uses CSS variables so each card is tunable if needed */
+      /* sharp corners for card */
+      border-radius:0; /* <- sharp */
       --card-bg: var(--card);
       --stroke: var(--card-stroke);
       display:grid;
@@ -134,7 +139,6 @@
       gap:18px;
       background:var(--card-bg);
       border:1px solid var(--stroke);
-      border-radius:var(--radius-lg);
       padding:16px;
       box-shadow:var(--shadow);
       align-items:center;
@@ -144,7 +148,9 @@
     }
 
     .game-thumb{
-      width:120px; height:120px; border-radius:14px;
+      width:120px; height:120px;
+      /* sharp corners for game image holder */
+      border-radius:0; /* <- sharp */
       background:#0f0f0f;
       border:1px solid #222;
       display:grid; place-items:center;
@@ -153,32 +159,20 @@
     .game-thumb img{ width:100%; height:100%; object-fit:cover; }
 
     .game-body{ display:grid; gap:10px; }
-    .game-title{
-      font-size:clamp(18px, 2.2vw, 22px);
-      font-weight:700; letter-spacing:.02em;
-    }
-    .game-desc{
-      color:var(--muted);
-      font-size:14.5px;
-      line-height:1.6;
-    }
+    .game-title{ font-size:clamp(18px, 2.2vw, 22px); font-weight:700; letter-spacing:.02em; }
+    .game-desc{ color:var(--muted); font-size:14.5px; line-height:1.6; }
 
-    .store-row{
-      display:flex; flex-wrap:wrap; gap:10px;
-      align-items:center;
-    }
+    .store-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
     .store-btn{
-      /* Brand-agnostic store button */
       display:inline-flex; align-items:center; gap:8px;
       padding:10px 12px;
       border:1px solid #2a2a2a;
-      border-radius:10px;
+      border-radius:10px;   /* store buttons remain as-is */
       background:#0f0f0f;
       font-weight:600; font-size:14px;
       transition:transform .12s ease, border-color .2s ease, background .2s ease, color .2s ease;
     }
     .store-btn:hover{ transform:translateY(-1px); border-color:#3a3a3a; background:#151515; color:#fff; }
-
     .store-ico{ width:18px; height:18px; display:block; }
 
     /* ---- About ---- */
@@ -190,20 +184,25 @@
     @media (max-width:640px){ .about{ grid-template-columns: 1fr; text-align:center; } }
 
     .avatar{
-      width:104px; height:104px; border-radius:12px;
+      width:104px; height:104px;
+      /* sharp corners for avatar */
+      border-radius:0; /* <- sharp */
       border:1px solid #222; background:#0f0f0f; overflow:hidden;
     }
     .about p{ color:var(--muted); margin:0; }
+
+    /* Yellow, centered coffee button */
     .coffee{
-      margin-top:10px;
+      margin:16px auto 0;            /* centered */
       display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px; border-radius:10px;
-      background:var(--accent-2);
-      border:1px solid var(--accent);
-      font-weight:700;
-      transition:transform .12s ease, background .2s ease;
+      padding:12px 18px;
+      border-radius:8px;
+      background:#ffd84d;            /* yellow */
+      border:1px solid #caa200;
+      color:#000; font-weight:800;
+      transition:transform .12s ease, background .2s ease, filter .2s ease;
     }
-    .coffee:hover{ transform:translateY(-1px); background:var(--accent); }
+    .coffee:hover{ transform:translateY(-1px); filter:saturate(1.05); }
 
     /* ---- Footer ---- */
     footer{
@@ -227,7 +226,7 @@
   <header class="topbar" aria-label="Site">
     <div class="topbar__inner">
       <nav class="nav" aria-label="Primary">
-        <!-- Use hashes to scroll to sections -->
+        <!-- Sharp-corner nav buttons -->
         <a href="#main">Main</a>
         <a href="#games">Games</a>
         <a href="#about">About</a>
@@ -237,12 +236,13 @@
 
   <!-- MAIN / HERO -->
   <section id="main" class="section section--hero" aria-label="Main">
-    <!-- Logo (update path to your asset) -->
+    <!-- Logo -->
     <img class="logo" src="assets/piratesloop-logo2.png" alt="Pirate Sloop Logo">
 
-    <!-- <div class="brand">PIRATE SLOOP</div> -->  // Text Header
+    <!-- Brand text (commented out for future use) -->
+    <!-- <div class="brand">PIRATESLOOP</div> -->
 
-    <!-- Social row -->
+    <!-- Social row (round chips kept intact) -->
     <div class="socials" aria-label="Social links">
       <!-- Tumblr -->
       <a class="chip" href="https://piratesloop.tumblr.com/" target="_blank" rel="noopener" aria-label="Tumblr">
@@ -280,9 +280,8 @@
       <h2 class="h2">About</h2>
 
       <div class="about">
-        <!-- Avatar -->
+        <!-- Avatar (sharp corners) -->
         <div class="avatar">
-          <!-- Update image path if needed -->
           <img src="assets/ihor-avatar.jpg" alt="Ihor portrait">
         </div>
 
@@ -295,6 +294,7 @@
           <p>If you have any comments or thoughts, feel free to reach out — I’ll do my best to reply!</p>
           <p><a href="mailto:piratesloop4@gmail.com">piratesloop4@gmail.com</a></p>
 
+          <!-- Yellow centered button -->
           <a class="coffee" href="https://www.buymeacoffee.com/piratesloop" target="_blank" rel="noopener">
             ☕ Buy me a coffee
           </a>
@@ -308,29 +308,20 @@
   </footer>
 
   <!-- ===== Templates & Scripts ===== -->
-  <!-- Game card template: populated from gamesData -->
   <template id="game-card-template">
-    <!--
-      NOTE:
-      - This template is cloned per game.
-      - You can style each card using CSS variables via element.style.setProperty, if needed.
-    -->
+    <!-- Game card with sharp corners -->
     <article class="game-card">
       <div class="game-thumb"><img alt=""></div>
-
       <div class="game-body">
         <div class="game-title"></div>
         <div class="game-desc"></div>
-
         <div class="store-row" aria-label="Stores"></div>
       </div>
     </article>
   </template>
 
   <script>
-    // ---------------------------
-    // Small helpers & data model
-    // ---------------------------
+    // ---- Minimal helpers & data ----
 
     /** Build a store button (brand-agnostic) */
     function createStoreButton(label, href, svgPathD){
@@ -364,29 +355,22 @@
       gplay:  "M3 4.3a2 2 0 011.9-1.9l8.8 8.2-3 3-7.7-9.3zM12.6 11.6l3-3 3.3 3.1-9.3 5.5 3-5.6zM3 5.9l7.2 8.8L4.8 17A2 2 0 013 15.1V5.9zM19.8 9.9l1.2.9a2 2 0 010 3.2l-1.3.9-3.9-2.5 4-2.5z"
     };
 
-    // ---------------------------
-    // Data: add your games here
-    // ---------------------------
+    // Add your games here
     const gamesData = [
       {
         title: "Darkened: Dungeon RPG",
-        // Short, atmospheric copy — matches your style
         description:
           "Plunge into a cursed world of dark fantasy. Explore unique dungeons, master tactical turn-based combat, and unravel the secrets of a realm consumed by corruption.",
-        cover: "assets/darkened-cover.jpg", // square-ish recommended (e.g., 512×512)
+        cover: "assets/darkened-cover.jpg",
         stores: [
-          { label: "Steam",     url: "#", icon: ICONS.steam },
-          { label: "App Store", url: "#", icon: ICONS.ios },
+          { label: "Steam",       url: "#", icon: ICONS.steam },
+          { label: "App Store",   url: "#", icon: ICONS.ios },
           { label: "Google Play", url: "#", icon: ICONS.gplay }
         ]
       }
-
-      // To add another game: copy the object above, change fields, done.
     ];
 
-    // ---------------------------
-    // Render games from template
-    // ---------------------------
+    // Render cards
     const grid = document.getElementById('gamesGrid');
     const tpl = document.getElementById('game-card-template');
 
@@ -412,7 +396,7 @@
     // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Smooth scroll for in-page nav (native behavior is fine; this is just a helper)
+    // Smooth in-page scroll
     document.querySelectorAll('.nav a[href^="#"]').forEach(a=>{
       a.addEventListener('click', e=>{
         const id = a.getAttribute('href').slice(1);
