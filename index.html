@@ -1,99 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pirate Sloop</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Додайте сюди більше шрифтів, якщо потрібно -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #000000; /* Чорний фон */
-      color: #f5f5f5;
+    :root{
+      /* ---- Theme tokens ---- */
+      --bg: #000;
+      --fg: #f5f5f5;
+      --muted: #cfcfcf;
+      --accent: #a03e3e;
+      --accent-2: #7a2c2c;
+      --card: #0c0c0c;
+      --card-stroke: #242424;
+      --chip: #111;
+      --chip-stroke:#2a2a2a;
 
-      /* 🔤 Тут можна змінити загальний шрифт сайту */
-      font-family: 'Fira Sans', sans-serif;
-      font-weight: 400;
-
-      display: flex;
-      flex-direction: column; 
-      align-items: center;
-      text-align: center;
-      min-height: 100vh;
-      overflow: hidden; /* ❌ Забороняє прокручування */
+      /* ---- Layout ---- */
+      --maxw: 1080px;
+      --pad-x: clamp(16px, 4vw, 32px);
+      --section-pad: clamp(48px, 7vw, 96px);
+      --radius: 16px;
+      --radius-lg: 22px;
+      --shadow: 0 6px 30px rgba(0,0,0,.6);
     }
 
-    img.logo {
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      margin-top: 50px;
-      margin-bottom: 40px;
+    /* Base reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--fg);
+      background:var(--bg);
+      font-family:'Fira Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height:1.5;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    /* ---- Top bar ---- */
+    .topbar{
+      position:sticky; /* stays at top when scrolling */
+      top:0;
+      z-index:10;
+      background:linear-gradient(180deg, rgba(0,0,0,.85), rgba(0,0,0,.6));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid #111;
+    }
+    .topbar__inner{
+      max-width:var(--maxw);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end; /* nav on the right */
+      gap:20px;
+      padding:14px var(--pad-x);
+    }
+    .nav a{
+      font-weight:700;
+      letter-spacing:.02em;
+      display:inline-block;
+      padding:8px 10px;
+      border-radius:6px;
+      transition:transform .15s ease, background-color .2s ease, color .2s ease;
+      color:#ddd;
+    }
+    .nav a:hover{ transform:translateY(-1px); color:#fff; background:#111; }
+
+    /* ---- Hero (Main) ---- */
+    .section{padding:var(--section-pad) var(--pad-x);}
+    .section--hero{
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding-top:calc(var(--section-pad) + 24px);
+    }
+    .logo{
+      width:min(92vw, 600px);
+      margin:10px auto 28px;
+      filter:drop-shadow(0 8px 28px rgba(0,0,0,.75));
+    }
+    .brand{
+      font-family:'Baskervville', serif;
+      font-size:clamp(28px, 4.2vw, 52px);
+      letter-spacing:.28em;
+      color:#fff;
+      text-indent:.28em; /* optical centering with tracking */
+      margin:6px 0 14px;
+    }
+    .socials{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      margin-top:18px;
+    }
+    .chip{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:48px;height:48px;border-radius:50%;
+      background:var(--chip); border:1px solid var(--chip-stroke);
+      transition:transform .15s ease, border-color .2s ease, background .2s ease;
+    }
+    .chip:hover{ transform:translateY(-2px); border-color:#3a3a3a; background:#141414; }
+
+    /* ---- Games ---- */
+    .section--games{ background: radial-gradient(1200px 500px at 50% -200px, rgba(160,62,62,.08), transparent 70%); }
+    .container{ max-width:var(--maxw); margin:0 auto; }
+    .h2{
+      font-family:'Baskervville', serif;
+      font-size:clamp(22px, 2.6vw, 34px);
+      margin:0 0 22px;
+    }
+    .games-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+    @media (min-width:740px){
+      .games-grid{ grid-template-columns: 1fr; }
     }
 
-    h1 {
-      font-family: 'Baskervville', serif; /* 🏛️ Шрифт заголовку */
-      font-size: 3.2em;
-      margin: 0.4em 0 0.2em;
-      color: #ffffff;
+    .game-card{
+      /* Card uses CSS variables so each card is tunable if needed */
+      --card-bg: var(--card);
+      --stroke: var(--card-stroke);
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:18px;
+      background:var(--card-bg);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius-lg);
+      padding:16px;
+      box-shadow:var(--shadow);
+      align-items:center;
+    }
+    @media (max-width:520px){
+      .game-card{ grid-template-columns: 1fr; text-align:center; }
     }
 
-    p {
-      font-size: 1.2em;
-      max-width: 700px;
-      margin: 0 20px 2em;
-      color: #ccc;
-      line-height: 1.6;
+    .game-thumb{
+      width:120px; height:120px; border-radius:14px;
+      background:#0f0f0f;
+      border:1px solid #222;
+      display:grid; place-items:center;
+      overflow:hidden;
+    }
+    .game-thumb img{ width:100%; height:100%; object-fit:cover; }
+
+    .game-body{ display:grid; gap:10px; }
+    .game-title{
+      font-size:clamp(18px, 2.2vw, 22px);
+      font-weight:700; letter-spacing:.02em;
+    }
+    .game-desc{
+      color:var(--muted);
+      font-size:14.5px;
+      line-height:1.6;
     }
 
-    a.button {
-      text-decoration: none;
-      background-color: #7a2c2c;
-      color: white;
-      padding: 14px 28px;
-      font-size: 1em;
-      border-radius: 0; /* гострі краї */
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      border: 2px solid #a03e3e;      
-      letter-spacing: 1px;
+    .store-row{
+      display:flex; flex-wrap:wrap; gap:10px;
+      align-items:center;
+    }
+    .store-btn{
+      /* Brand-agnostic store button */
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border:1px solid #2a2a2a;
+      border-radius:10px;
+      background:#0f0f0f;
+      font-weight:600; font-size:14px;
+      transition:transform .12s ease, border-color .2s ease, background .2s ease, color .2s ease;
+    }
+    .store-btn:hover{ transform:translateY(-1px); border-color:#3a3a3a; background:#151515; color:#fff; }
+
+    .store-ico{ width:18px; height:18px; display:block; }
+
+    /* ---- About ---- */
+    .about{
+      display:grid; gap:16px;
+      grid-template-columns: 104px 1fr;
+      align-items:start;
+    }
+    @media (max-width:640px){ .about{ grid-template-columns: 1fr; text-align:center; } }
+
+    .avatar{
+      width:104px; height:104px; border-radius:12px;
+      border:1px solid #222; background:#0f0f0f; overflow:hidden;
+    }
+    .about p{ color:var(--muted); margin:0; }
+    .coffee{
+      margin-top:10px;
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:10px;
+      background:var(--accent-2);
+      border:1px solid var(--accent);
+      font-weight:700;
+      transition:transform .12s ease, background .2s ease;
+    }
+    .coffee:hover{ transform:translateY(-1px); background:var(--accent); }
+
+    /* ---- Footer ---- */
+    footer{
+      padding:20px var(--pad-x) 40px;
+      color:#8a8a8a;
+      text-align:center;
+      font-size:13px;
+      border-top:1px solid #0f0f0f;
+      margin-top:var(--section-pad);
     }
 
-    a.button:hover {
-      background-color: #a03e3e;
-      transform: scale(1.05);
-    }
-
-    footer {
-      margin-top: auto;
-      padding: 20px;
-      font-size: 0.8em;
-      color: #555;
+    /* ---- Accessibility: motion ---- */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; animation:none !important }
     }
   </style>
 </head>
 <body>
 
-  <!-- Логотип -->
-  <img class="logo" src="assets/piratesloop-logo2.png" alt="Pirate Sloop Logo" />
+  <!-- Top navigation (right aligned) -->
+  <header class="topbar" aria-label="Site">
+    <div class="topbar__inner">
+      <nav class="nav" aria-label="Primary">
+        <!-- Use hashes to scroll to sections -->
+        <a href="#main">Main</a>
+        <a href="#games">Games</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
 
-  <!-- Заголовок -->
-  <!-- <h1>Pirate Sloop</h1> -->
+  <!-- MAIN / HERO -->
+  <section id="main" class="section section--hero" aria-label="Main">
+    <!-- Logo (update path to your asset) -->
+    <img class="logo" src="assets/piratesloop-logo2.png" alt="Pirate Sloop Logo">
 
-  <!-- Опис -->
-  <!-- <p>Enter a world of shadows, ancient curses, and forgotten gods.<br>
-  A mobile dark fantasy RPG with turn-based combat and deep lore.</p> -->
+    <div class="brand">PIRATESLOOP</div>
 
-  <!-- Кнопка -->
-  <a class="button" href="https://piratesloop.tumblr.com/" target="_blank" rel="noopener">Blog</a>
+    <!-- Social row -->
+    <div class="socials" aria-label="Social links">
+      <!-- Tumblr -->
+      <a class="chip" href="https://piratesloop.tumblr.com/" target="_blank" rel="noopener" aria-label="Tumblr">
+        <!-- simple SVG icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#cfcfcf" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.6 21.9c-3.9 0-6.4-2.1-6.4-5.6V9H6V6.1c2.5-.9 3.3-2.9 3.6-4.1H12v3.6h3v3.4h-3v6c0 1.4.8 2.2 2.1 2.2 1 0 1.7-.2 2.4-.6v3.1c-.7.4-1.9.8-2.9.8z"/>
+        </svg>
+      </a>
+      <!-- Discord -->
+      <a class="chip" href="#" aria-label="Discord">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#cfcfcf" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 5.6a17.8 17.8 0 00-4.5-1.4l-.3.6a16 16 0 00-6.4 0l-.3-.6A17.8 17.8 0 003 5.6C1.2 8.4.7 11 1 13.6a17.7 17.7 0 006.7 3.4l.9-1.4a8.6 8.6 0 01-1.3-.6l.3-.2c2.6 1.2 5.7 1.2 8.3 0l.3.2c-.4.2-.8.4-1.3.6l.9 1.4a17.7 17.7 0 006.7-3.4c.4-2.6-.2-5.2-1.6-8zM9.4 13c-.9 0-1.6-.8-1.6-1.8S8.5 9.4 9.4 9.4s1.6.8 1.6 1.8S10.3 13 9.4 13zm5.2 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8z"/>
+        </svg>
+      </a>
+      <!-- Reddit -->
+      <a class="chip" href="#" aria-label="Reddit">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#cfcfcf" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 12.3c0-1.3-1-2.3-2.3-2.3-.6 0-1.1.2-1.5.6-1.1-.8-2.6-1.3-4.2-1.4l.8-3.7 2.6.6a1.7 1.7 0 103-.7l-3.4-.8a.8.8 0 00-.9.6l-.9 4a9 9 0 00-4.9 1.4 2.3 2.3 0 00-1.5-.6A2.3 2.3 0 003 12.3c0 .7.3 1.3.8 1.7 0 2.6 3.1 4.8 7.2 4.8s7.2-2.2 7.2-4.8c.5-.4.8-1 .8-1.7zM9 14.5c-.7 0-1.2-.5-1.2-1.1S8.3 12.3 9 12.3s1.2.5 1.2 1.1-.5 1.1-1.2 1.1zm6 0c-.7 0-1.2-.5-1.2-1.1s.5-1.1 1.2-1.1 1.2.5 1.2 1.1-.5 1.1-1.2 1.1zm-3 2.6c-1.3 0-2.4-.5-3-.9a.5.5 0 01.6-.8c.4.3 1.1.7 2.4.7s2-.4 2.4-.7a.5.5 0 11.6.8c-.6.4-1.7.9-3 .9z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
 
-  <!-- Footer -->
-  <!-- <footer>&copy; 2025 Pirate Sloop</footer> -->
+  <!-- GAMES -->
+  <section id="games" class="section section--games" aria-label="Games">
+    <div class="container">
+      <h2 class="h2">Games</h2>
+      <div id="gamesGrid" class="games-grid"></div>
+    </div>
+  </section>
 
+  <!-- ABOUT -->
+  <section id="about" class="section" aria-label="About">
+    <div class="container">
+      <h2 class="h2">About</h2>
+
+      <div class="about">
+        <!-- Avatar -->
+        <div class="avatar">
+          <!-- Update image path if needed -->
+          <img src="assets/ihor-avatar.jpg" alt="Ihor portrait">
+        </div>
+
+        <!-- Text -->
+        <div>
+          <p><strong>Ahoy!</strong></p>
+          <p>I’m the captain of Pirate Sloop — and the only full-time crew member.</p>
+          <p>My name is Ihor. I’m from Ukraine and work as an architect. Game development is my hobby — something I do in my free time.</p>
+          <p>If you’ve found your way here through one of my games — thank you for playing! Your time and interest mean a lot.</p>
+          <p>If you have any comments or thoughts, feel free to reach out — I’ll do my best to reply!</p>
+          <p><a href="mailto:piratesloop4@gmail.com">piratesloop4@gmail.com</a></p>
+
+          <a class="coffee" href="https://www.buymeacoffee.com/piratesloop" target="_blank" rel="noopener">
+            ☕ Buy me a coffee
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="y"></span> Pirate Sloop
+  </footer>
+
+  <!-- ===== Templates & Scripts ===== -->
+  <!-- Game card template: populated from gamesData -->
+  <template id="game-card-template">
+    <!--
+      NOTE:
+      - This template is cloned per game.
+      - You can style each card using CSS variables via element.style.setProperty, if needed.
+    -->
+    <article class="game-card">
+      <div class="game-thumb"><img alt=""></div>
+
+      <div class="game-body">
+        <div class="game-title"></div>
+        <div class="game-desc"></div>
+
+        <div class="store-row" aria-label="Stores"></div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    // ---------------------------
+    // Small helpers & data model
+    // ---------------------------
+
+    /** Build a store button (brand-agnostic) */
+    function createStoreButton(label, href, svgPathD){
+      const a = document.createElement('a');
+      a.className = 'store-btn';
+      a.href = href || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.ariaLabel = label;
+
+      // icon
+      const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('class','store-ico');
+      svg.setAttribute('viewBox','0 0 24 24');
+      svg.setAttribute('fill','#cfcfcf');
+      const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('d', svgPathD);
+      svg.appendChild(p);
+
+      const span = document.createElement('span');
+      span.textContent = label;
+
+      a.append(svg, span);
+      return a;
+    }
+
+    // Simple brand icons (monotone) for store buttons
+    const ICONS = {
+      steam:  "M20 3a2 2 0 012 2v14a2 2 0 01-2 2H12a5 5 0 00-9.2-.7A2 2 0 013 19v-1.2l2.1.7A3 3 0 108.8 16H20a1 1 0 001-1V5a1 1 0 00-1-1h-8a1 1 0 00-1 1v5h-2V5a3 3 0 013-3h8z",
+      ios:    "M16.4 1.9c.5 1.2.3 2.7-.6 3.9-.9 1.2-2.5 2.1-3.7 2-.4-1.1-.2-2.5.7-3.7 1-1.4 2.7-2.4 3.6-2.2zM12.1 8.2c2.1 0 3 1.2 4.5 1.2 1.6 0 2.5-1.2 4.7-1.2-2.5 6.7-4 10.1-6.3 10.1-1.6 0-2.1-1-3.9-1s-2.4 1-3.9 1c-2.4 0-4.6-4.9-6.6-10.1 2.4 0 3.3 1.2 4.8 1.2 1.4 0 2.1-1.2 4.7-1.2z",
+      gplay:  "M3 4.3a2 2 0 011.9-1.9l8.8 8.2-3 3-7.7-9.3zM12.6 11.6l3-3 3.3 3.1-9.3 5.5 3-5.6zM3 5.9l7.2 8.8L4.8 17A2 2 0 013 15.1V5.9zM19.8 9.9l1.2.9a2 2 0 010 3.2l-1.3.9-3.9-2.5 4-2.5z"
+    };
+
+    // ---------------------------
+    // Data: add your games here
+    // ---------------------------
+    const gamesData = [
+      {
+        title: "Darkened: Dungeon RPG",
+        // Short, atmospheric copy — matches your style
+        description:
+          "Plunge into a cursed world of dark fantasy. Explore unique dungeons, master tactical turn-based combat, and unravel the secrets of a realm consumed by corruption.",
+        cover: "assets/darkened-cover.jpg", // square-ish recommended (e.g., 512×512)
+        stores: [
+          { label: "Steam",     url: "#", icon: ICONS.steam },
+          { label: "App Store", url: "#", icon: ICONS.ios },
+          { label: "Google Play", url: "#", icon: ICONS.gplay }
+        ]
+      }
+
+      // To add another game: copy the object above, change fields, done.
+    ];
+
+    // ---------------------------
+    // Render games from template
+    // ---------------------------
+    const grid = document.getElementById('gamesGrid');
+    const tpl = document.getElementById('game-card-template');
+
+    gamesData.forEach(game => {
+      const node = tpl.content.cloneNode(true);
+
+      // Thumb
+      const img = node.querySelector('.game-thumb img');
+      img.src = game.cover;
+      img.alt = `${game.title} cover`;
+
+      // Title & desc
+      node.querySelector('.game-title').textContent = game.title;
+      node.querySelector('.game-desc').textContent = game.description;
+
+      // Stores
+      const row = node.querySelector('.store-row');
+      game.stores.forEach(s => row.appendChild(createStoreButton(s.label, s.url, s.icon)));
+
+      grid.appendChild(node);
+    });
+
+    // Footer year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Smooth scroll for in-page nav (native behavior is fine; this is just a helper)
+    document.querySelectorAll('.nav a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){
+          e.preventDefault();
+          el.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      });
+    });
+  </script>
 </body>
 </html>
